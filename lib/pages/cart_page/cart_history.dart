@@ -18,6 +18,23 @@ import '../../controllers/cart_controller.dart';
 class CartHistory extends StatelessWidget {
   const CartHistory({Key? key}) : super(key: key);
 
+  Widget _timeWidget(int i, List<dynamic> getCartHistoryList) {
+    {
+      var outputDate = DateTime.now().toString();
+      if (i < getCartHistoryList.length) {
+        DateTime parseDate = DateFormat("yyyy-MM-dd HH:mm:ss")
+            .parse(getCartHistoryList[i].time!);
+        var outputFormat = DateFormat("MM/dd/yyyy hh:mm a");
+
+        outputDate = outputFormat.format(parseDate);
+      }
+      return BigText(
+        text: outputDate,
+        size: Dimensions.font20,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var getCartHistoryList =
@@ -88,22 +105,7 @@ class CartHistory extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        (() {
-                                          DateTime parseDate = DateFormat(
-                                                  "yyyy-MM-dd HH:mm:ss")
-                                              .parse(
-                                                  getCartHistoryList[i].time!);
-                                          var outputFormat =
-                                              DateFormat("MM/dd/yyyy hh:mm a");
-
-                                          var outputDate =
-                                              outputFormat.format(parseDate);
-
-                                          return BigText(
-                                            text: outputDate,
-                                            size: Dimensions.font20,
-                                          );
-                                        }()),
+                                        _timeWidget(i, getCartHistoryList),
                                         SizedBox(
                                           height: Dimensions.responsiveHeight10,
                                         ),

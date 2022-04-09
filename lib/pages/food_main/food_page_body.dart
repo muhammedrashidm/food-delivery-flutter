@@ -1,11 +1,14 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery/controllers/catogery_contoller.dart';
 import 'package:food_delivery/controllers/popular_product_controller.dart';
 import 'package:food_delivery/controllers/recommended_foods_controller.dart';
 import 'package:food_delivery/data/repositories/recommended_food_repository.dart';
 import 'package:food_delivery/helper/appConstants.dart';
 import 'package:food_delivery/modals/products_modal.dart';
 import 'package:food_delivery/pages/food_detail/popular_food_detail.dart';
+import 'package:food_delivery/pages/food_main/category_vise_page.dart';
+import 'package:food_delivery/pages/food_main/recomended_food.dart';
 import 'package:food_delivery/routes/route_helper.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/utils/dimensions.dart';
@@ -22,11 +25,13 @@ class FoodPageBody extends StatefulWidget {
   State<FoodPageBody> createState() => _FoodPageBodyState();
 }
 
-class _FoodPageBodyState extends State<FoodPageBody> {
+class _FoodPageBodyState extends State<FoodPageBody>
+    with TickerProviderStateMixin {
   final PageController _pageController = PageController(viewportFraction: .85);
   var _currentPageValue = 0.0;
   double _scaleFactor = 0.8;
   double _heightFactor = 220;
+  late TabController _tabController;
 
   @override
   void initState() {
@@ -47,7 +52,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
+      children: <Widget>[
         GetBuilder<PopularProductController>(builder: (popularProducts) {
           return popularProducts.isLoaded
               ? Container(
@@ -97,153 +102,86 @@ class _FoodPageBodyState extends State<FoodPageBody> {
         SizedBox(
           height: Dimensions.responsiveHeight30,
         ),
-        Container(
-          margin: EdgeInsets.only(left: Dimensions.responsiveWidth20),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              BigText(
-                text: 'Recommended',
-                size: 20,
-              ),
-              SizedBox(
-                width: Dimensions.responsiveWidth5,
-              ),
-              Container(
-                margin: const EdgeInsets.only(bottom: 3),
-                child: BigText(
-                  text: '.',
-                  size: Dimensions.font30,
-                ),
-              ),
-              SizedBox(
-                width: Dimensions.responsiveWidth5,
-              ),
-              Container(
-                margin: const EdgeInsets.only(bottom: 2),
-                child: SmallText(
-                  text: 'Food Pairing',
-                ),
-              )
-            ],
-          ),
-        ),
-        Container(
-          width: double.infinity,
-          child: GetBuilder<RecommendedFoodController>(
-            builder: (recommendedFoods) {
-              return recommendedFoods.isLoaded
-                  ? ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: recommendedFoods.recommendedFoodList.length,
-                      itemBuilder: (context, index) {
-                        ProductModal product =
-                            recommendedFoods.recommendedFoodList[index];
-                        return GestureDetector(
-                          onTap: () => Get.toNamed(
-                              RouteHelper.getToRecommendedFoodDetails(
-                                  index, 'initial')),
-                          child: Container(
-                            width: double.infinity,
-                            margin: EdgeInsets.symmetric(
-                                horizontal: Dimensions.responsiveWidth10,
-                                vertical: 5),
-                            child: Row(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          Dimensions.responsiveHeight20),
-                                      color: Colors.amberAccent,
-                                      image: DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: NetworkImage(
-                                              AppConstants.API_BASE_URL +
-                                                  '/uploads/' +
-                                                  product.img!))),
-                                  width: Dimensions.responsiveHeight125,
-                                  height: Dimensions.responsiveHeight125,
-                                ),
-                                //Text Container
-                                Expanded(
-                                  child: Container(
-                                    padding: EdgeInsets.all(
-                                        Dimensions.responsiveHeight10),
-                                    height:
-                                        Dimensions.responsiveHeight125 * .85,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.only(
-                                        bottomRight: Radius.circular(
-                                            Dimensions.responsiveHeight20),
-                                        topRight: Radius.circular(
-                                            Dimensions.responsiveHeight20),
-                                      ),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        BigText(
-                                          text: product.name!,
-                                          size: 20,
-                                        ),
-                                        SizedBox(
-                                          height: Dimensions.responsiveHeight5,
-                                        ),
-                                        SmallText(text: product.description!),
-                                        SizedBox(
-                                          height: Dimensions.responsiveHeight5,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            IconAndTextWidget(
-                                                text: "Normal",
-                                                icon: Icons.circle_sharp,
-                                                iconColor:
-                                                    AppColors.iconColor1),
-                                            IconAndTextWidget(
-                                                text: "1.7km",
-                                                icon: Icons.location_on,
-                                                iconColor: AppColors.mainColor),
-                                            IconAndTextWidget(
-                                                text: "32 min",
-                                                icon: Icons.timer,
-                                                iconColor:
-                                                    AppColors.iconColor2),
-                                          ],
-                                        )
-                                      ],
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      })
-                  : Column(
-                      children: [
-                        SizedBox(
-                          height: Dimensions.responsiveHeight45,
-                        ),
-                        CircularProgressIndicator(
-                          color: AppColors.mainColor,
-                        ),
-                      ],
-                    );
-            },
-          ),
-        )
+
+        // Tab view
+        _tabSection(context)
       ],
     );
   }
 
+  Widget _tabSection(BuildContext context) {
+    return GetBuilder<CategoryController>(builder: (controller) {
+      List<String> catogeries = controller.getCatogeries();
+      _tabController =
+          TabController(length: catogeries.length + 1, vsync: this);
+      List<Widget> _tabBarItems = [
+        Text(
+          "Recomended",
+          style: TextStyle(
+            fontSize: Dimensions.font15,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ];
+      List<Widget> _tabViewItems = [RecommendedFood()];
+      for (var item in catogeries) {
+        _tabBarItems.add(
+          Text(
+            item,
+            style: TextStyle(
+              fontSize: Dimensions.font15,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        );
+      }
+
+      for (var item in catogeries) {
+        _tabViewItems.add(
+          SingleChildScrollView(
+              child: CategoryPageBuilder(
+            category: item,
+          )),
+        );
+      }
+
+      return Column(
+        children: [
+          TabBar(
+            labelColor: _tabController.index == 0
+                ? AppColors.mainColor
+                : AppColors.paraColor,
+            isScrollable: true,
+            tabs: _tabBarItems,
+            controller: _tabController,
+          ),
+          Container(
+            height: MediaQuery.of(context).size.height * .72,
+            child: TabBarView(
+              children: _tabViewItems,
+              controller: _tabController,
+            ),
+          )
+        ],
+      );
+    });
+  }
+
+  //
+  //
+//
+//
+//
+//
+//
+
+//
+//
+//
+//
+//
+// /
+//
   Widget _pageViewBuilder(int index, ProductModal product) {
     Dimensions dimension = Dimensions();
     // TODO: implement _pageViewBuilder animation;
@@ -297,5 +235,39 @@ class _FoodPageBodyState extends State<FoodPageBody> {
   }
 }
 
+
+
 //page view aniamtion
 //1.38
+
+// Container(
+//   margin: EdgeInsets.only(left: Dimensions.responsiveWidth20),
+//   child: Row(
+//     crossAxisAlignment: CrossAxisAlignment.end,
+//     children: [
+//       BigText(
+//         text: 'Recommended',
+//         size: 20,
+//       ),
+//       SizedBox(
+//         width: Dimensions.responsiveWidth5,
+//       ),
+//       Container(
+//         margin: const EdgeInsets.only(bottom: 3),
+//         child: BigText(
+//           text: '.',
+//           size: Dimensions.font30,
+//         ),
+//       ),
+//       SizedBox(
+//         width: Dimensions.responsiveWidth5,
+//       ),
+//       Container(
+//         margin: const EdgeInsets.only(bottom: 2),
+//         child: SmallText(
+//           text: 'Food Pairing',
+//         ),
+//       )
+//     ],
+//   ),
+// ),

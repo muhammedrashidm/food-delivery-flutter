@@ -101,8 +101,10 @@ class CartController extends GetxController {
   set setCart(List<CartModal> cart) {
     storageCartItems = cart;
     for (var i = 0; i < cart.length; i++) {
-      _items.putIfAbsent(
-          storageCartItems[i].product!.id!, () => storageCartItems[i]);
+      if (storageCartItems.isNotEmpty && storageCartItems[i].product is ProductModal) {
+        _items.putIfAbsent(
+            storageCartItems[i].product!.id!, () => storageCartItems[i]);
+      }
     }
   }
 
@@ -136,13 +138,15 @@ class CartController extends GetxController {
     return _historyitems.entries.map((e) => e.value).toList();
   }
 
-  set setItems(Map<int,CartModal> setItems){
-    _items ={};
-    _items=setItems;
-  update();
+  set setItems(Map<int, CartModal> setItems) {
+    _items = {};
+    _items = setItems;
+    update();
   }
 
-  void  addToCartList(){
+  // TODO possible bug of product being null
+
+  void addToCartList() {
     cartRepository.addToCartList(getItemsList);
     update();
   }

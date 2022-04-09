@@ -18,7 +18,6 @@ class _MainFoodPageState extends State<MainFoodPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Column(
         children: [
           Container(
@@ -74,13 +73,12 @@ class _MainFoodPageState extends State<MainFoodPage> {
               ),
             ),
           ),
-       const Expanded(
-           child: SingleChildScrollView(
-         child:    const FoodPageBody(),
-       ))
+          Expanded(
+              child: SingleChildScrollView(
+            child: FoodPageBody(),
+          ))
         ],
       ),
-
     );
   }
 }

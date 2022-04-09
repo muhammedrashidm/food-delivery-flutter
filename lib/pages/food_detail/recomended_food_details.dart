@@ -128,7 +128,10 @@ class RecommendedFoodDetails extends StatelessWidget {
                   margin: EdgeInsets.only(
                       left: Dimensions.responsiveWidth10,
                       right: Dimensions.responsiveWidth10),
-                  child: ExpandableText(text: product.description),
+                  child: ExpandableText(
+                    text: product.description,
+                    textHeight: Dimensions.screenHeight / 4.5,
+                  ),
                 )
               ],
             ),

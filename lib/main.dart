@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/controllers/cart_controller.dart';
 import 'package:food_delivery/controllers/popular_product_controller.dart';
 import 'package:food_delivery/controllers/recommended_foods_controller.dart';
-import 'package:food_delivery/pages/cart_page/cart_page.dart';
-import 'package:food_delivery/pages/food_detail/popular_food_detail.dart';
-import 'package:food_delivery/pages/food_detail/recomended_food_details.dart';
-import 'package:food_delivery/pages/splash/splash_page.dart';
+import 'package:food_delivery/data/api/posts_api.dart';
+
 import 'package:food_delivery/routes/route_helper.dart';
 import 'package:get/get.dart';
 import 'helper/dependenciies.dart' as dep;
@@ -24,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.find<CartController>().getCartData();
     Get.find<CartController>().getCartHistoryData();
-
+    Get.find<PostsApiClient>().getData('/api/');
     return GetBuilder<PopularProductController>(builder: (_) {
       return GetBuilder<RecommendedFoodController>(builder: (_) {
         return GetMaterialApp(

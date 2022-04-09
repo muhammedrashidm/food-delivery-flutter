@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/controllers/cart_controller.dart';
+import 'package:food_delivery/pages/auth/sign_up_page.dart';
 import 'package:food_delivery/pages/cart_page/cart_history.dart';
 import 'package:food_delivery/pages/cart_page/cart_page.dart';
+import 'package:food_delivery/pages/feed_page/feed_page.dart';
 import 'package:food_delivery/pages/food_main/main_food_page.dart';
+import 'package:food_delivery/pages/profile_page/profile_page.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -22,44 +25,36 @@ class _HomePageState extends State<HomePage> {
 
   List<Widget> pages = [
     const MainFoodPage(),
-    Container(
-      child: const Center(
-        child: const Text('Feed'),
-      ),
-    ),
-    CartPage(),
-    Container(
-      child: const Center(
-        child: Text('next next next nxt page'),
-      ),
-    ),
-    CartHistory()
+    const FeedPage(),
+    const CartPage(),
+    const ProfilePage(),
+    const CartHistory()
   ];
 
   List<PersistentBottomNavBarItem> _navBarItems() {
     return [
       PersistentBottomNavBarItem(
-          icon: Icon(CupertinoIcons.home),
+          icon: const Icon(CupertinoIcons.home),
           title: ("Home"),
           activeColorPrimary: CupertinoColors.activeBlue,
           inactiveColorPrimary: CupertinoColors.systemGrey),
       PersistentBottomNavBarItem(
-          icon: Icon(CupertinoIcons.news),
+          icon: const Icon(CupertinoIcons.news),
           title: ("Feed"),
           activeColorPrimary: CupertinoColors.activeBlue,
           inactiveColorPrimary: CupertinoColors.systemGrey),
       PersistentBottomNavBarItem(
-          icon: Icon(CupertinoIcons.cart),
+          icon: const Icon(CupertinoIcons.cart),
           title: ("Cart"),
           activeColorPrimary: CupertinoColors.activeBlue,
           inactiveColorPrimary: CupertinoColors.systemGrey),
       PersistentBottomNavBarItem(
-          icon: Icon(CupertinoIcons.person_alt_circle),
+          icon: const Icon(CupertinoIcons.person_alt_circle),
           title: ("Account"),
           activeColorPrimary: CupertinoColors.activeBlue,
           inactiveColorPrimary: CupertinoColors.systemGrey),
       PersistentBottomNavBarItem(
-          icon: Icon(CupertinoIcons.archivebox),
+          icon: const Icon(CupertinoIcons.archivebox),
           title: ("History"),
           activeColorPrimary: CupertinoColors.activeBlue,
           inactiveColorPrimary: CupertinoColors.systemGrey),

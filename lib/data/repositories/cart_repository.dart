@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:food_delivery/helper/appConstants.dart';
+import 'package:food_delivery/modals/products_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../modals/cart_modal.dart';
@@ -21,13 +22,17 @@ class CartRepository {
     var time = DateTime.now().toString();
     cart = [];
     for (var element in cartList) {
-      element.time = time;
-      cart.add(jsonEncode(element));
+      if(element.product is ProductModal){
+        element.time = time;
+        cart.add(jsonEncode(element));
+      }
+
     }
     sharedPref.setStringList(AppConstants.CART_LIST_KEY, cart);
   }
 
   List<CartModal> getCartList() {
+    print('geting cart list');
     List<CartModal> cartList = [];
     if (sharedPref.containsKey(AppConstants.CART_LIST_KEY)) {
       cart = sharedPref.getStringList(AppConstants.CART_LIST_KEY) ?? [];

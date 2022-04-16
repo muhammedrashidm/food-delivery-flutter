@@ -2,20 +2,14 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/controllers/catogery_contoller.dart';
 import 'package:food_delivery/controllers/popular_product_controller.dart';
-import 'package:food_delivery/controllers/recommended_foods_controller.dart';
-import 'package:food_delivery/data/repositories/recommended_food_repository.dart';
 import 'package:food_delivery/helper/appConstants.dart';
 import 'package:food_delivery/modals/products_modal.dart';
-import 'package:food_delivery/pages/food_detail/popular_food_detail.dart';
 import 'package:food_delivery/pages/food_main/category_vise_page.dart';
 import 'package:food_delivery/pages/food_main/recomended_food.dart';
 import 'package:food_delivery/routes/route_helper.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/utils/dimensions.dart';
 import 'package:food_delivery/widgets/app_column.dart';
-import 'package:food_delivery/widgets/big_text.dart';
-import 'package:food_delivery/widgets/icon_and_text_widget.dart';
-import 'package:food_delivery/widgets/small_text.dart';
 import 'package:get/get.dart';
 
 class FoodPageBody extends StatefulWidget {
@@ -51,61 +45,63 @@ class _FoodPageBodyState extends State<FoodPageBody>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        GetBuilder<PopularProductController>(builder: (popularProducts) {
-          return popularProducts.isLoaded
-              ? Container(
-                  padding: EdgeInsets.only(top: Dimensions.responsiveHeight10),
-                  height: Dimensions.pageViewHeight,
-                  child: PageView.builder(
-                    controller: _pageController,
-                    itemCount: popularProducts.popularProductList.length,
-                    itemBuilder: (context, position) {
-                      return GestureDetector(
-                        onTap: () {
-                          Get.toNamed(RouteHelper.getToPopularFoodDetails(
-                              position, 'initial'));
-                        },
-                        child: _pageViewBuilder(position,
-                            popularProducts.popularProductList[position]),
-                      );
-                    },
-                  ),
-                )
-              : SizedBox(
-                  height: Dimensions.pageViewHeight,
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.mainColor,
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          GetBuilder<PopularProductController>(builder: (popularProducts) {
+            return popularProducts.isLoaded
+                ? Container(
+                    padding: EdgeInsets.only(top: Dimensions.responsiveHeight10),
+                    height: Dimensions.pageViewHeight,
+                    child: PageView.builder(
+                      controller: _pageController,
+                      itemCount: popularProducts.popularProductList.length,
+                      itemBuilder: (context, position) {
+                        return GestureDetector(
+                          onTap: () {
+                            Get.toNamed(RouteHelper.getToPopularFoodDetails(
+                                position, 'initial'));
+                          },
+                          child: _pageViewBuilder(position,
+                              popularProducts.popularProductList[position]),
+                        );
+                      },
                     ),
-                  ),
-                );
-        }),
-        GetBuilder<PopularProductController>(builder: (popularProducts) {
-          return DotsIndicator(
-            dotsCount: popularProducts.popularProductList.isEmpty
-                ? 1
-                : popularProducts.popularProductList.length,
-            position: _currentPageValue,
-            decorator: DotsDecorator(
-              color: AppColors.paraColor.withOpacity(.5),
-              activeColor: AppColors.mainColor,
-              size: const Size.square(9.0),
-              activeSize: const Size(18.0, 9.0),
-              activeShape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(Dimensions.responsiveHeight5)),
-            ),
-          );
-        }),
-        SizedBox(
-          height: Dimensions.responsiveHeight30,
-        ),
+                  )
+                : SizedBox(
+                    height: Dimensions.pageViewHeight,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.mainColor,
+                      ),
+                    ),
+                  );
+          }),
+          GetBuilder<PopularProductController>(builder: (popularProducts) {
+            return DotsIndicator(
+              dotsCount: popularProducts.popularProductList.isEmpty
+                  ? 1
+                  : popularProducts.popularProductList.length,
+              position: _currentPageValue,
+              decorator: DotsDecorator(
+                color: AppColors.paraColor.withOpacity(.5),
+                activeColor: AppColors.mainColor,
+                size: const Size.square(9.0),
+                activeSize: const Size(18.0, 9.0),
+                activeShape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(Dimensions.responsiveHeight5)),
+              ),
+            );
+          }),
+          SizedBox(
+            height: Dimensions.responsiveHeight30,
+          ),
 
-        // Tab view
-        _tabSection(context)
-      ],
+          // Tab view
+          _tabSection(context)
+        ],
+      ),
     );
   }
 
@@ -138,10 +134,9 @@ class _FoodPageBodyState extends State<FoodPageBody>
 
       for (var item in catogeries) {
         _tabViewItems.add(
-          SingleChildScrollView(
-              child: CategoryPageBuilder(
+          CategoryPageBuilder(
             category: item,
-          )),
+          ),
         );
       }
 
@@ -156,7 +151,8 @@ class _FoodPageBodyState extends State<FoodPageBody>
             controller: _tabController,
           ),
           Container(
-            height: MediaQuery.of(context).size.height * .72,
+
+            height: MediaQuery.of(context).size.height *.72,
             child: TabBarView(
               children: _tabViewItems,
               controller: _tabController,
@@ -167,21 +163,8 @@ class _FoodPageBodyState extends State<FoodPageBody>
     });
   }
 
-  //
-  //
-//
-//
-//
-//
-//
 
-//
-//
-//
-//
-//
-// /
-//
+
   Widget _pageViewBuilder(int index, ProductModal product) {
     Dimensions dimension = Dimensions();
     // TODO: implement _pageViewBuilder animation;
@@ -240,34 +223,3 @@ class _FoodPageBodyState extends State<FoodPageBody>
 //page view aniamtion
 //1.38
 
-// Container(
-//   margin: EdgeInsets.only(left: Dimensions.responsiveWidth20),
-//   child: Row(
-//     crossAxisAlignment: CrossAxisAlignment.end,
-//     children: [
-//       BigText(
-//         text: 'Recommended',
-//         size: 20,
-//       ),
-//       SizedBox(
-//         width: Dimensions.responsiveWidth5,
-//       ),
-//       Container(
-//         margin: const EdgeInsets.only(bottom: 3),
-//         child: BigText(
-//           text: '.',
-//           size: Dimensions.font30,
-//         ),
-//       ),
-//       SizedBox(
-//         width: Dimensions.responsiveWidth5,
-//       ),
-//       Container(
-//         margin: const EdgeInsets.only(bottom: 2),
-//         child: SmallText(
-//           text: 'Food Pairing',
-//         ),
-//       )
-//     ],
-//   ),
-// ),

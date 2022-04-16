@@ -14,7 +14,6 @@ class MainFoodPage extends StatefulWidget {
 }
 
 class _MainFoodPageState extends State<MainFoodPage> {
-  Dimensions _dimensions = Dimensions();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

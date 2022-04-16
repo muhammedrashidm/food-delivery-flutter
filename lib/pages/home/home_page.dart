@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_delivery/controllers/cart_controller.dart';
-import 'package:food_delivery/pages/auth/sign_up_page.dart';
 import 'package:food_delivery/pages/cart_page/cart_history.dart';
 import 'package:food_delivery/pages/cart_page/cart_page.dart';
 import 'package:food_delivery/pages/feed_page/feed_page.dart';
 import 'package:food_delivery/pages/food_main/main_food_page.dart';
 import 'package:food_delivery/pages/profile_page/profile_page.dart';
-import 'package:food_delivery/utils/colors.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../controllers/auth_controller.dart';
+import '../../controllers/user_controller.dart';
+import '../../data/repositories/auth_repository.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -23,9 +23,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late PersistentTabController _controller;
 
+
   List<Widget> pages = [
     const MainFoodPage(),
-    const FeedPage(),
+      const FeedPage(),
     const CartPage(),
     const ProfilePage(),
     const CartHistory()
@@ -60,13 +61,20 @@ class _HomePageState extends State<HomePage> {
           inactiveColorPrimary: CupertinoColors.systemGrey),
     ];
   }
-
+  getToken() async {
+    var t = await Get.find<AuthController>().getUserToken();
+    Get.find<AuthRepo>().saveUserToken(t);
+  }
   int _selectedPageIndex = 0;
   void onTapNav(int index) => setState(() => _selectedPageIndex = index);
   @override
   void initState() {
     _controller = PersistentTabController(initialIndex: 0);
-    super.initState();
+    bool _userLoggedIn = Get.find<AuthController>().userLoggedIN();
+    if (_userLoggedIn) {
+      getToken();
+      Get.find<UserController>().getUserInfo();
+    }    super.initState();
   }
 
   @override

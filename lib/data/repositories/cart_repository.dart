@@ -76,4 +76,7 @@ class CartRepository {
     }
     return cartList;
   }
+  void clearCartHistory(){
+    sharedPref.remove(AppConstants.CART_HISTORY_KEY);
+  }
 }

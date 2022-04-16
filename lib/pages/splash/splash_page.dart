@@ -16,50 +16,57 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin{
-
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
   late Animation<double> animation;
- late AnimationController animationController;
+  late AnimationController animationController;
 
- Future<void> _loadResources()async{
-  await Get.find<PopularProductController>().getPopularProductList();
-  await Get.find<RecommendedFoodController>().getRecommendedFood();
- }
+  Future<void> _loadResources() async {
+    await Get.find<PopularProductController>().getPopularProductList();
+    await Get.find<RecommendedFoodController>().getRecommendedFood();
+  }
 
- @override
+  @override
   void dispose() {
     // TODO: implement dispose
-   animationController.dispose();
+    animationController.dispose();
 
     super.dispose();
   }
 
- @override
+  @override
   void initState() {
-
     super.initState();
     _loadResources();
-    animationController = AnimationController(vsync: this, duration: const Duration(seconds: 2))..forward();
-    animation = CurvedAnimation(parent: animationController, curve: Curves.linear);
+    animationController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 2))
+          ..forward();
+    animation =
+        CurvedAnimation(parent: animationController, curve: Curves.linear);
 
-    Timer(Duration(seconds: 3),()=>Get.offNamed(RouteHelper.initial));
+    Timer(Duration(seconds: 3), () => Get.offNamed(RouteHelper.initial));
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ScaleTransition(
-
-              scale: animation,
-              child: Center(child: Image.asset('assets/image/logo part 1.png',width: Dimensions.responsiveHeight125*2,))),
-          Center(child: Image.asset('assets/image/logo part 2.png',width: Dimensions.responsiveHeight125*2,))
-
-
-        ],
-      )
-    );
+        backgroundColor: Colors.white,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ScaleTransition(
+                scale: animation,
+                child: Center(
+                    child: Image.asset(
+                  'assets/image/logo part 1.png',
+                  width: Dimensions.responsiveHeight125 * 2,
+                ))),
+            Center(
+                child: Image.asset(
+              'assets/image/logo part 2.png',
+              width: Dimensions.responsiveHeight125 * 2,
+            ))
+          ],
+        ));
   }
 }

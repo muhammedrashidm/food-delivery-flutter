@@ -9,7 +9,7 @@ class RecommendedFoodRepository extends GetxService{
   RecommendedFoodRepository({required this.apiClient});
   
   Future<Response>getRecomendedFoodResponse()async{
-    return await apiClient.getData(AppConstants.RECOMMENDED_PRODUCT_ENDPOINT);
+    return await apiClient.getData(uri:AppConstants.RECOMMENDED_PRODUCT_ENDPOINT);
   }
   
 }

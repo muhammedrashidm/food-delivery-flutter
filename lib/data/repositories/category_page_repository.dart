@@ -8,6 +8,6 @@ class CategoryPageRepository extends GetxService {
   CategoryPageRepository({required this.apiClient});
 
   Future<Response> getProductList({required String endpoint}) async {
-    return apiClient.getData(AppConstants.API_BASE_PRODUCT_URL + endpoint);
+    return apiClient.getData(uri:AppConstants.API_BASE_PRODUCT_URL + endpoint);
   }
 }

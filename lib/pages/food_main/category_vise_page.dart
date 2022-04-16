@@ -38,94 +38,96 @@ class _CategoryPageBuilderState extends State<CategoryPageBuilder> {
   Widget build(BuildContext context) {
     return GetBuilder<CategoryPageController>(builder: (categoryFood) {
       return categoryFood.isLoaded
-          ? ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: categoryFood.foodList.length,
-              itemBuilder: (context, index) {
-                ProductModal product = categoryFood.foodList[index];
-                return GestureDetector(
-                  onTap: () => Get.toNamed(
-                      RouteHelper.getToRecommendedFoodDetails(
-                          index, 'initial')),
-                  child: Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.symmetric(
-                        horizontal: Dimensions.responsiveWidth10, vertical: 5),
-                    child: Row(
-                      children: [
-                        Container(
-                          key: ValueKey(product.id),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                  Dimensions.responsiveHeight20),
-                              color: Colors.amberAccent,
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                      AppConstants.API_BASE_URL +
-                                          '/uploads/' +
-                                          product.img!))),
-                          width: Dimensions.responsiveHeight125,
-                          height: Dimensions.responsiveHeight125,
-                        ),
-                        //Text Container
-                        Expanded(
-                          child: Container(
-                            padding:
-                                EdgeInsets.all(Dimensions.responsiveHeight10),
-                            height: Dimensions.responsiveHeight125 * .85,
+          ? SingleChildScrollView(
+            child: ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: categoryFood.foodList.length,
+                itemBuilder: (context, index) {
+                  ProductModal product = categoryFood.foodList[index];
+                  return GestureDetector(
+                    onTap: () => Get.toNamed(
+                        RouteHelper.getToRecommendedFoodDetails(
+                            index, 'initial')),
+                    child: Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.symmetric(
+                          horizontal: Dimensions.responsiveWidth10, vertical: 5),
+                      child: Row(
+                        children: [
+                          Container(
+                            key: ValueKey(product.id),
                             decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(
+                                borderRadius: BorderRadius.circular(
                                     Dimensions.responsiveHeight20),
-                                topRight: Radius.circular(
-                                    Dimensions.responsiveHeight20),
+                                color: Colors.amberAccent,
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                        AppConstants.API_BASE_URL +
+                                            '/uploads/' +
+                                            product.img!))),
+                            width: Dimensions.responsiveHeight125,
+                            height: Dimensions.responsiveHeight125,
+                          ),
+                          //Text Container
+                          Expanded(
+                            child: Container(
+                              padding:
+                                  EdgeInsets.all(Dimensions.responsiveHeight10),
+                              height: Dimensions.responsiveHeight125 * .85,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(
+                                      Dimensions.responsiveHeight20),
+                                  topRight: Radius.circular(
+                                      Dimensions.responsiveHeight20),
+                                ),
+                              ),
+                              child: Column(
+                                children: [
+                                  BigText(
+                                    text: product.name!,
+                                    size: 20,
+                                  ),
+                                  SizedBox(
+                                    height: Dimensions.responsiveHeight5,
+                                  ),
+                                  SmallText(text: product.description!),
+                                  SizedBox(
+                                    height: Dimensions.responsiveHeight5,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      IconAndTextWidget(
+                                          text: "Normal",
+                                          icon: Icons.circle_sharp,
+                                          iconColor: AppColors.iconColor1),
+                                      IconAndTextWidget(
+                                          text: "1.7km",
+                                          icon: Icons.location_on,
+                                          iconColor: AppColors.mainColor),
+                                      IconAndTextWidget(
+                                          text: "32 min",
+                                          icon: Icons.timer,
+                                          iconColor: AppColors.iconColor2),
+                                    ],
+                                  )
+                                ],
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
                               ),
                             ),
-                            child: Column(
-                              children: [
-                                BigText(
-                                  text: product.name!,
-                                  size: 20,
-                                ),
-                                SizedBox(
-                                  height: Dimensions.responsiveHeight5,
-                                ),
-                                SmallText(text: product.description!),
-                                SizedBox(
-                                  height: Dimensions.responsiveHeight5,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconAndTextWidget(
-                                        text: "Normal",
-                                        icon: Icons.circle_sharp,
-                                        iconColor: AppColors.iconColor1),
-                                    IconAndTextWidget(
-                                        text: "1.7km",
-                                        icon: Icons.location_on,
-                                        iconColor: AppColors.mainColor),
-                                    IconAndTextWidget(
-                                        text: "32 min",
-                                        icon: Icons.timer,
-                                        iconColor: AppColors.iconColor2),
-                                  ],
-                                )
-                              ],
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                            ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              })
+                  );
+                }),
+          )
           : Column(
               children: [
                 SizedBox(

@@ -22,6 +22,7 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> init() async {
+  
   final sharedPref = await SharedPreferences.getInstance();
   Get.lazyPut(() => sharedPref);
 //apiClient

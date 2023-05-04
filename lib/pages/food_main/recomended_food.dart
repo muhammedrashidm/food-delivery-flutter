@@ -46,9 +46,9 @@ class RecommendedFood extends StatelessWidget {
                                   color: Colors.amberAccent,
                                   image: DecorationImage(
                                       fit: BoxFit.cover,
-                                      image: NetworkImage(
-                                          AppConstants.API_BASE_URL +
-                                              '/uploads/' +
+                                      image: AssetImage(
+
+
                                               product.img!))),
                               width: Dimensions.responsiveHeight125,
                               height: Dimensions.responsiveHeight125,

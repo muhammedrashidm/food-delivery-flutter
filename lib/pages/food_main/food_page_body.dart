@@ -179,8 +179,8 @@ class _FoodPageBodyState extends State<FoodPageBody>
             borderRadius: BorderRadius.circular(Dimensions.responsiveHeight30),
             image: DecorationImage(
               fit: BoxFit.cover,
-              image: NetworkImage(
-                AppConstants.API_BASE_URL + '/uploads/' + product.img!,
+              image: AssetImage(
+             product.img!,
               ),
             ),
           ),

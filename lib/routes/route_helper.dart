@@ -10,6 +10,7 @@ import 'package:food_delivery/pages/splash/splash_page.dart';
 import 'package:get/get.dart';
 
 class RouteHelper {
+  
   static const String splash = '/splash';
   static const String initial = "/";
   static const String mainFoodPage = "/main_food_page";

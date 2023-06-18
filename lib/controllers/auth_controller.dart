@@ -35,19 +35,19 @@ class AuthController extends GetxController implements GetxService {
   Future<ResponseModal> login(String phone,String password) async {
     setIsLoading(true);
     late ResponseModal responseModal;
+   return ResponseModal('fake_token', true);
+    // Response response = await authRepo.login(phone,password);
 
-    Response response = await authRepo.login(phone,password);
+    // if (response.statusCode == 200) {
+    //   authRepo.saveUserToken(response.body["token"]);
+    //   responseModal = ResponseModal(response.body["token"], true);
 
-    if (response.statusCode == 200) {
-      authRepo.saveUserToken(response.body["token"]);
-      responseModal = ResponseModal(response.body["token"], true);
+    // } else {
+    //   responseModal = ResponseModal(response.statusText.toString(), false);
+    // }
+    // setIsLoading(false);
 
-    } else {
-      responseModal = ResponseModal(response.statusText.toString(), false);
-    }
-    setIsLoading(false);
-
-    return responseModal;
+    // return responseModal;
   }
   Future<void>saveUserNumberAndPassword(String number,String password)async{
     try{
